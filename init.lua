@@ -1,0 +1,7 @@
+require "user.general.options"
+require "user.general.keymaps"
+require "user.general.plugins"
+require "user.general.colorscheme"
+require "user.general.cmp"
+require "user.general.lsp"
+require "user.general.telescope"
