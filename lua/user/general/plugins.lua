@@ -45,14 +45,16 @@ return packer.startup(function(use)
   use "wbthomason/packer.nvim" -- Have packer manage itself
   use "nvim-lua/popup.nvim" -- An implementation of the Popup API from vim in Neovim
   use "nvim-lua/plenary.nvim" -- Useful lua functions used ny lots of plugins
-  use "scrooloose/nerdtree" -- Tree Directory used for opening files
+  --use "scrooloose/nerdtree" -- Tree Directory used for opening files
   use "scrooloose/nerdcommenter" -- commenter
 
 -- Theme
   use "joshdick/onedark.vim"
   use "folke/tokyonight.nvim"
 
-  use "Xuyuanp/nerdtree-git-plugin" -- show nerdtree git status
+  --use "Xuyuanp/nerdtree-git-plugin" -- show nerdtree git status
+  use "nvim-tree/nvim-tree.lua" -- show nerdtree git status
+  use "nvim-tree/nvim-web-devicons"
   use "easymotion/vim-easymotion" -- Easier navigation
   use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, }) -- Preview of markdown
 
@@ -78,11 +80,22 @@ return packer.startup(function(use)
   use "williamboman/mason-lspconfig.nvim" -- simple to use language server installer
   use "RRethy/vim-illuminate"
   use 'jose-elias-alvarez/null-ls.nvim' -- LSP diagnostics and code actions
+  use "hashivim/vim-terraform"
 
   -- Telescope
 
   use "nvim-telescope/telescope.nvim"
   use 'nvim-telescope/telescope-media-files.nvim'
+
+  -- Tree Sitter
+  use {
+		  'nvim-treesitter/nvim-treesitter',
+		  run = function()
+			  local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+			  ts_update()
+		  end,
+	  }
+
 
 
   -- Airline

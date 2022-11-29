@@ -4,6 +4,7 @@ local servers = {
 	"pyright",
 	"jsonls",
     "tsserver",
+    "terraformls"
 }
 
 local settings = {

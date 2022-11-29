@@ -88,9 +88,9 @@ keymap("t", "<C-j>", "<C-\\><C-N><C-w>j", term_opts)
 keymap("t", "<C-k>", "<C-\\><C-N><C-w>k", term_opts)
 
 
---Nerd Tree
+--NVIM tree
 
-keymap("n", "<leader>t", ":NERDTreeToggle<CR>", opts)
+keymap("n", "<leader>t", ":NvimTreeToggle<CR>", opts)
 
 -- Set Paste Option --
 keymap("n", "<leader>p", ":set paste<CR>", opts)
@@ -99,3 +99,7 @@ keymap("n", "<leader>np", ":set nopaste<CR>", opts)
 keymap("n", "<leader>n", ":noh<CR>", opts)
 keymap("n", "<leader>f", ":Telescope find_files<CR>", opts)
 keymap("n", "<leader>a", ":Telescope live_grep<CR>", opts)
+keymap("n", "<leader>gf", "<cmd>lua require'telescope.builtin'.git_files(require('telescope.themes').get_dropdown({ previewer = true }))<cr>", opts)
+-- Without previewer
+--keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
+
