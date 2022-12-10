@@ -103,6 +103,9 @@ return packer.startup(function(use)
   use "vim-airline/vim-airline"
   use "vim-airline/vim-airline-themes"
 
+  use "lewis6991/gitsigns.nvim"
+  use "windwp/nvim-autopairs"
+
 
   if PACKER_BOOTSTRAP then
     require("packer").sync()

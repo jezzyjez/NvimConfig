@@ -47,7 +47,7 @@ vim.cmd "hi LspReferenceText cterm=bold gui=bold"
 vim.cmd "hi LspReferenceRead cterm=bold gui=bold"
 vim.cmd "hi LspReferenceWrite cterm=bold gui=bold"
 vim.cmd "let g:airline#extensions#tabline#enabled = 1"
-vim.cmd "let g:airline#extensions#tabline#fnamemod = ':t'"
+--vim.cmd "let g:airline#extensions#tabline#fnamemod = ':t'"
 
 
 
