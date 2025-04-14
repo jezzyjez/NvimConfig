@@ -27,8 +27,8 @@ keymap("n", "<S-l>", "<C-w>l", opts)
 
 keymap("n", "<leader>e", ":Lex 30<cr>", opts)
 -- tab Navigation
-keymap("n", "<C-h>", ":tabp<CR>", opts)
-keymap("n", "<C-l>", ":tabn<CR>", opts)
+--keymap("n", "<C-h>", ":tabp<CR>", opts)
+--keymap("n", "<C-l>", ":tabn<CR>", opts)
 
 
 -- Reload Config
@@ -37,7 +37,7 @@ keymap("n", "<leader>rv", ":source $MYVIMRC<CR>", opts)
 
 
 function _G.ReloadConfig()
-  for name,_ in pairs(package.loaded) do
+  for name, _ in pairs(package.loaded) do
     if name:match('^user') then
       package.loaded[name] = nil
     end
@@ -51,21 +51,25 @@ vim.cmd('command! ReloadConfig lua ReloadConfig()')
 
 
 -- Resize with arrows
-keymap("n", "<C-Up>", ":resize +2<CR>", opts)
-keymap("n", "<C-Down>", ":resize -2<CR>", opts)
-keymap("n", "<C-Left>", ":vertical resize -2<CR>", opts)
-keymap("n", "<C-Right>", ":vertical resize +2<CR>", opts)
+keymap("n", "<C-s><C-i>", ":resize +2<CR>", term_opts)
+keymap("n", "<C-s><C-k>", ":resize -2<CR>", term_opts)
+keymap("n", "<C-s><C-h>", ":vertical resize -2<CR>", term_opts)
+keymap("n", "<C-s><C-l>", ":vertical resize +2<CR>", term_opts)
 
 -- Navigate buffers
-keymap("n", "<A-l>", ":bnext<CR>", opts)
-keymap("n", "<A-h>", ":bprevious<CR>", opts)
+keymap("n", "<C-l>", ":bnext<CR>", opts)
+keymap("n", "<C-h>", ":bprevious<CR>", opts)
+
+-- Close buffer
+
+keymap("n", "<C-d>", ":bdelete<CR>", opts)
 
 -- Insert --
 -- Press kj fast to enter
 keymap("i", "kj", "<ESC>", opts)
 
 -- Visual --
--- Stay in indent mode
+-- Stay in indent mod1111e
 keymap("v", "<", "<gv", opts)
 keymap("v", ">", ">gv", opts)
 
@@ -96,10 +100,39 @@ keymap("n", "<leader>t", ":NvimTreeToggle<CR>", opts)
 keymap("n", "<leader>p", ":set paste<CR>", opts)
 keymap("n", "<leader>np", ":set nopaste<CR>", opts)
 
+keymap("n", "<C-j>", ":lua vim.lsp.buf.hover()<CR>", opts)
+
+
 keymap("n", "<leader>n", ":noh<CR>", opts)
 keymap("n", "<leader>f", ":Telescope find_files<CR>", opts)
 keymap("n", "<leader>a", ":Telescope live_grep<CR>", opts)
-keymap("n", "<leader>gf", "<cmd>lua require'telescope.builtin'.git_files(require('telescope.themes').get_dropdown({ previewer = true }))<cr>", opts)
+keymap("n", "<leader>gf",
+  "<cmd>lua require'telescope.builtin'.git_files(require('telescope.themes').get_dropdown({ previewer = true }))<cr>",
+  opts)
 -- Without previewer
 --keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.find_files(require('telescope.themes').get_dropdown({ previewer = false }))<cr>", opts)
 
+
+-- null ls --
+keymap("n", "<leader>fl", ":lua vim.lsp.buf.format()<CR>", opts)
+
+keymap("n", "<leader>rp", ":%s/\\(flows.*\\)\\n\\d\\+\\s*\\(.*\\)/\\1\\2,/<CR>", opts)
+
+-- octo @ and # completion --
+vim.api.nvim_buf_set_keymap(0, "i", "@", "@<C-x><C-o>", { silent = true, noremap = true })
+vim.api.nvim_buf_set_keymap(0, "i", "#", "#<C-x><C-o>", { silent = true, noremap = true })
+
+-- debugging
+
+keymap("n", "<leader>df", ":lua require('dap-python').test_class()<CR>", opts)
+keymap("n", "<leader>lp", ":lua require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>", opts)
+keymap("n", "<F5>", ":lua require('dap').continue()<CR>", opts)
+keymap("n", "<F6>", ":lua require('dap').step_over()<CR>", opts)
+keymap("n", "<F7>", ":lua require('dap').step_into()<CR>", opts)
+keymap("n", "<F8>", ":lua require('dap').step_out()<CR>", opts)
+keymap("n", "<leader>b", ":lua require('dap').toggle_breakpoint()<CR>", opts)
+keymap("n", "<leader>B", ":lua require('dap').set_breakpoint()<CR>", opts)
+keymap("n", "<leader>dr", ":lua require('dap').repl.open()<CR>", opts)
+keymap("n", "<leader>dl", ":lua require('dap').run_last()<CR>", opts)
+keymap("n", "<leader>dp", ":lua require('dapui').toggle()<CR>", opts)
+keymap("n", "<leader>dt", ":Trouble diagnostics<CR>", opts)

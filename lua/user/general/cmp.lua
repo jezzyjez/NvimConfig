@@ -8,6 +8,12 @@ if not snip_status_ok then
   return
 end
 
+local has_words_before = function()
+  if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then return false end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+end
+
 require("luasnip/loaders/from_vscode").lazy_load()
 
 local check_backspace = function()
@@ -17,13 +23,13 @@ end
 
 --   פּ ﯟ   some other good icons
 local kind_icons = {
-  Text = "",
+  Text = "T",
   Method = "m",
-  Function = "",
+  Function = "≝",
   Constructor = "",
   Field = "",
   Variable = "",
-  Class = "",
+  Class = "©",
   Interface = "",
   Module = "",
   Property = "",
@@ -33,7 +39,7 @@ local kind_icons = {
   Keyword = "",
   Snippet = "",
   Color = "",
-  File = "",
+  File = "f",
   Reference = "",
   Folder = "",
   EnumMember = "",
@@ -42,6 +48,7 @@ local kind_icons = {
   Event = "",
   Operator = "",
   TypeParameter = "",
+  Copilot = "",
 }
 -- find more here: https://www.nerdfonts.com/cheat-sheet
 
@@ -53,7 +60,7 @@ cmp.setup {
   },
   mapping = {
     ["<C-k>"] = cmp.mapping.select_prev_item(),
-		["<C-j>"] = cmp.mapping.select_next_item(),
+    ["<C-j>"] = cmp.mapping.select_next_item(),
     ["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
     ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
     ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
@@ -64,10 +71,10 @@ cmp.setup {
     },
     -- Accept currently selected item. If none selected, `select` first item.
     -- Set `select` to `false` to only confirm explicitly selected items.
-    ["<CR>"] = cmp.mapping.confirm { select = true },
+    ["<CR>"] = cmp.mapping.confirm { select = false },
     ["<Tab>"] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
+      if cmp.visible() and has_words_before() then
+        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
       elseif luasnip.expandable() then
         luasnip.expand()
       elseif luasnip.expand_or_jumpable() then
@@ -95,6 +102,7 @@ cmp.setup {
     }),
   },
   formatting = {
+
     fields = { "kind", "abbr", "menu" },
     format = function(entry, vim_item)
       -- Kind icons
@@ -111,11 +119,13 @@ cmp.setup {
     end,
   },
   sources = {
-    { name = "nvim_lsp" },
-    { name = "nvim_lua" },
-    { name = "luasnip" },
-    { name = "buffer" },
-    { name = "path" },
+
+    { name = "nvim_lsp", group_index = 1, priority = 3 },
+    { name = "nvim_lua", group_index = 1, priority = 1 },
+    { name = "copilot",  group_index = 2, priority = 2 },
+    { name = "luasnip",  group_index = 2, priority = 2 },
+    { name = "buffer",   group_index = 2, priority = 2 },
+    { name = "path",     group_index = 2, priority = 2 },
   },
   confirm_opts = {
     behavior = cmp.ConfirmBehavior.Replace,
@@ -124,8 +134,9 @@ cmp.setup {
   window = {
     documentation = cmp.config.window.bordered(),
   },
-   texperimental = {
+  texperimental = {
     ghost_text = false,
     native_menu = false,
   },
 }
+-- cmp.lua

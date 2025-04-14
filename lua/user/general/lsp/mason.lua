@@ -1,10 +1,11 @@
 
 local servers = {
-	"sumneko_lua",
+	"lua_ls",
 	"pyright",
 	"jsonls",
-    "tsserver",
-    "terraformls"
+    "terraformls",
+    "marksman",
+    "ltex"
 }
 
 local settings = {

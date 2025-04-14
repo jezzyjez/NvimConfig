@@ -34,7 +34,6 @@ local options = {
   sidescrolloff = 8,
   --statusline="%.t%=[%{strlen(&fenc)?&fenc:'none'} | %{&ff}]   ",
   guifont = "monospace:h17",               -- the font used in graphical neovim applications
-  guitablabel="%N %t",             -- tab with name only
 }
 
 vim.opt.shortmess:append "c"
